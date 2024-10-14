@@ -1,12 +1,11 @@
-import { StrictMode } from 'react';
+import { StrictMode, Suspense, lazy } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import App from './App';
 import Home from './component/Home';
-import Contact from './component/Contact';
-import { homeLoader } from './loaders/Loaders'; // Import the loader
-
+import { homeLoader } from './loaders/Loaders';
+const Contact = lazy(() => import('./component/Contact'));
 const router = createBrowserRouter([
   {
     path: "/",
@@ -23,7 +22,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/contact",
-        element: <Contact />
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <Contact />
+          </Suspense>
+        ),
       }
     ]
   }
